@@ -39,10 +39,10 @@ This guide deploys the Corapak Quote App for **free** using:
 3. Connect your GitHub repo.
 4. Configure:
    - **Name:** `corapak-quote-api`
-   - **Root directory:** `backend`
+   - **Root directory:** Leave **empty** (Render’s Root Directory field can reject some values; we’ll use the repo root instead)
    - **Runtime:** Node
-   - **Build command:** `npm install && npm run build`
-   - **Start command:** `npm start`
+   - **Build command:** `cd backend && npm install && npm run build`
+   - **Start command:** `cd backend && npm start`
 5. Under **Environment**, add:
    | Key | Value |
    |-----|-------|
@@ -80,7 +80,7 @@ DATABASE_URL="postgresql://your-neon-url?sslmode=require" npm run db:seed
 4. Under **Environment Variables**, add:
    | Key | Value |
    |-----|-------|
-   | `NEXT_PUBLIC_API_URL` | `https://your-render-url.onrender.com/api/v1` (from Step 2) |
+   | `NEXT_PUBLIC_API_URL` | `https://corapak-quote-api.onrender.com/api/v1` |
 5. Deploy.
 6. Copy your Vercel URL (e.g. `https://corapak-quote-app.vercel.app`).
 

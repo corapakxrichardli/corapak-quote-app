@@ -158,7 +158,7 @@ export default function QuoteReviewPage() {
             <ul className="mt-4 space-y-2 text-sm">
               {Object.entries(assumptions).map(([k, v]) => (
                 <li key={k} className="flex justify-between gap-4">
-                  <span className="text-slate-600">{assumptionLabels[k] ?? k.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}</span>
+                  <span className="text-slate-600">{assumptionLabels[k] ?? k.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}</span>
                   <span className="font-medium text-slate-900">{formatAssumptionValue(k, v)}</span>
                 </li>
               ))}
@@ -181,7 +181,7 @@ export default function QuoteReviewPage() {
               <dt className="text-slate-600">Freight & delivery</dt>
               <dd className="font-medium text-slate-900">
                 {typeof preview.freight_terms === 'string' && preview.freight_terms.startsWith('Customer commitment: ')
-                  ? preview.freight_terms.replace('Customer commitment: ', '').replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+                  ? preview.freight_terms.replace('Customer commitment: ', '').replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())
                   : preview.freight_terms ?? 'To be confirmed'}
               </dd>
               {preview.lead_time_assumptions && (

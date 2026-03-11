@@ -58,7 +58,7 @@ export function AirFreightFields({ details, update }: Props) {
         />
         <label htmlFor="import_duty" className="text-sm text-slate-600">Import duty required (seller bears)</label>
       </div>
-      {details.import_duty_required && (
+      {!!details.import_duty_required && (
         <div>
           <label className="block text-sm text-slate-600">Estimated duty rate % (override)</label>
           <input

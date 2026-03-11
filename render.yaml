@@ -1,12 +1,12 @@
 # Render Blueprint - optional one-click backend deploy
 # See DEPLOYMENT.md for full setup. Create Neon DB first, then add env vars in Render dashboard.
+# Note: rootDir omitted to avoid validation issues; we cd into backend in build/start.
 services:
   - type: web
     name: corapak-quote-api
     runtime: node
-    rootDir: backend
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    buildCommand: cd backend && npm install && npm run build
+    startCommand: cd backend && npm start
     envVars:
       - key: NODE_ENV
         value: production
