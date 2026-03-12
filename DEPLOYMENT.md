@@ -62,8 +62,8 @@ Render free services spin down when idle. To run migrations, use a one-off run o
 
 ```bash
 cd backend
-DATABASE_URL="postgresql://your-neon-url?sslmode=require" npm run db:migrate
-DATABASE_URL="postgresql://your-neon-url?sslmode=require" npm run db:seed
+DATABASE_URL="postgresql://neondb_owner:npg_KRAxtlCgL1m6@ep-twilight-tree-akv56k7h-pooler.c-3.us-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require" npm run db:migrate
+DATABASE_URL="postgresql://neondb_owner:npg_KRAxtlCgL1m6@ep-twilight-tree-akv56k7h-pooler.c-3.us-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require" npm run db:seed
 ```
 
 **Option B – Render Shell:** Render’s dashboard has a Shell; you can run the same commands there.
@@ -89,9 +89,9 @@ DATABASE_URL="postgresql://your-neon-url?sslmode=require" npm run db:seed
 ## Step 5: Secure the Backend (CORS)
 
 1. In Render → your **Web Service** → **Environment**.
-2. Add or update `FRONTEND_URL` with your Vercel URL(s) (comma-separated):
-   - Production: `https://corapak-quote-app.vercel.app`
-   - With preview deployments: add each preview URL as needed (e.g. `https://corapak-quote-app.vercel.app,https://corapak-quote-app-xyz123.vercel.app`)
+2. Add or update environment variables:
+   - **`FRONTEND_URL`** – Your main Vercel URL(s), comma-separated (e.g. `https://corapak-quote-app-frontend.vercel.app`)
+   - **`ALLOW_VERCEL_PREVIEWS`** – Set to `true` to allow all `*.vercel.app` URLs (covers every Vercel deployment URL, including previews). Recommended if you use multiple Vercel URLs.
 3. Save. Render will redeploy.
 
 ---
@@ -128,8 +128,10 @@ For an internal tool, you can lock the app:
 
 ## Troubleshooting
 
-**CORS errors:** Ensure `FRONTEND_URL` in Render matches the exact URL (including `https://`) of your Vercel app.
+**"Failed to fetch" when adding a customer (or any API call):**
+
+1. **CORS** – Set `ALLOW_VERCEL_PREVIEWS=true` in Render to allow all `*.vercel.app` URLs. Or ensure `FRONTEND_URL` exactly matches the URL in the browser’s address bar.
+2. **Cold start** – On Render’s free tier, the backend sleeps after ~15 min idle. The first request can take 30–60 seconds and may timeout. Try again after a short wait.
+3. **Backend URL** – Confirm `NEXT_PUBLIC_API_URL` in Vercel is `https://corapak-quote-api.onrender.com/api/v1`.
 
 **Database connection failed:** Ensure `?sslmode=require` is in the Neon connection string if required.
-
-**Backend timeout on first load:** Render free tier spins down; the first request after idle triggers a cold start.

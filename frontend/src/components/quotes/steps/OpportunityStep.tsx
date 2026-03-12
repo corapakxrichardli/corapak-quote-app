@@ -41,7 +41,12 @@ export function OpportunityStep({ data, update }: Props) {
       setNewCustomerPaymentTerms('');
       setShowAddCustomer(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to add customer');
+      const msg = err instanceof Error ? err.message : 'Failed to add customer';
+      setError(
+        msg === 'Failed to fetch'
+          ? 'Could not reach server. The backend may be starting—wait 30 seconds and try again.'
+          : msg
+      );
     } finally {
       setSaving(false);
     }

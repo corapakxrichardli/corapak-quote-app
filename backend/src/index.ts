@@ -10,14 +10,17 @@ const app = express();
 const PORT = Number(process.env.PORT) || Number(process.env.BACKEND_PORT) || 3001;
 
 // Security: restrict CORS in production to frontend URL(s) only
-// FRONTEND_URL: "https://your-app.vercel.app" or "https://a.com,https://b.com" (comma-separated)
-// Leave empty to allow all origins (dev only)
-const frontendUrls = process.env.FRONTEND_URL?.split(',').map((u) => u.trim()).filter(Boolean);
-const corsOptions = frontendUrls?.length
+// FRONTEND_URL: "https://your-app.vercel.app" or comma-separated list
+// Set ALLOW_VERCEL_PREVIEWS=true to also allow any *.vercel.app (covers all Vercel deployment URLs)
+const frontendUrls = process.env.FRONTEND_URL?.split(',').map((u) => u.trim()).filter(Boolean) ?? [];
+const allowVercelPreviews = process.env.ALLOW_VERCEL_PREVIEWS === 'true';
+const corsOptions = frontendUrls.length || allowVercelPreviews
   ? {
       origin: (origin: string | undefined, cb: (err: Error | null, allow?: boolean) => void) => {
         if (!origin) return cb(null, true);
-        cb(null, frontendUrls.includes(origin));
+        if (frontendUrls.includes(origin)) return cb(null, true);
+        if (allowVercelPreviews && origin.endsWith('.vercel.app')) return cb(null, true);
+        cb(null, false);
       },
     }
   : {};
